@@ -1,6 +1,6 @@
 # Hi, I'm Nicholas Tweedie 👋
 
-I am a **Software Engineering student at the University of California, Irvine**, specializing in the architecture of production-grade AI applications, intelligent machine learning pipelines, and real-time serverless systems. My work focuses on building high-performance developer tools, cloud-native computer vision infrastructure, and full-stack anomaly detection platforms.
+I am a **Software Engineering student at the University of California, Irvine** interested in innovative applications of AI.
 
 ---
 
