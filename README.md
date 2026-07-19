@@ -28,15 +28,10 @@ I am a **Software Engineering student at the University of California, Irvine** 
 * **Stack:** Python, FastAPI, Docker, Ollama / Hugging Face.
 * **Key Feature:** Provides an asynchronous API wrapper to deploy and run quantized open-source models locally with optimized inference and custom agent workflows.
 
-### 🏛️ [House Advantage](https://github.com/NicholasHat/house-advantage)
-*A full-stack civic transparency platform and data pipeline.*
-* **Stack:** Python, Next.js, Machine Learning (Scikit-Learn).
-* **Key Feature:** Utilizes an **Isolation Forest** machine learning architecture to analyze anomalies and trace patterns in congressional stock disclosures.
-
-### ☁️ [Nimbus](https://github.com/NicholasHat/nimbus)
-*An AWS serverless platform for real-time sign language translation.*
-* **Stack:** AWS Lambda, SageMaker, Bedrock, WebRTC.
-* **Key Feature:** Orchestrates real-time video streaming processing to translate American Sign Language (ASL) gestures instantly via serverless AI workflows.
+### 🧬 [oss-instruct-py](https://github.com/NicholasHat/oss-instruct-py)
+*A LoRA fine-tuning pipeline for a Python code-generation LLM, rebuilt end-to-end for Apple Silicon.*
+* **Stack:** Python, MLX, Hugging Face, Anthropic API.
+* **Key Feature:** Fine-tuned Qwen2.5-Coder-3B on 28K synthetic OSS-Instruct pairs, lifting HumanEval pass@1 by 3.0 pts (111→116/164) and MBPP by 1.4 pts — ported the original CUDA-only QLoRA recipe to `mlx-lm` and 4-bit quantization, then published the tuned adapter to Hugging Face Hub.
 
 ---
 
