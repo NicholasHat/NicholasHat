@@ -28,6 +28,11 @@ I am a **Software Engineering student at the University of California, Irvine** 
 * **Stack:** Python, FastAPI, Docker, Ollama / Hugging Face.
 * **Key Feature:** Provides an asynchronous API wrapper to deploy and run quantized open-source models locally with optimized inference and custom agent workflows.
 
+### 🔬 [rare-earth-extraction](https://github.com/NicholasHat/rare-earth-extraction)
+*A web app that turns rare-earth-element solvent-extraction research papers into a structured, queryable database.*
+* **Stack:** Python, Anthropic API (Claude Opus/Haiku), Streamlit, SQLite, pdfplumber.
+* **Key Feature:** Digitizes figures from research PDFs via a versioned Claude extraction pipeline, grounds the model against a deterministic vector-geometry marker count to catch under-digitization, and gates every result through an automatic QA suite plus human review before it's merged — with a strict read/write boundary so the query-facing AI assistant can't mutate data even if jailbroken.
+
 ### 🧬 [oss-instruct-py](https://github.com/NicholasHat/oss-instruct-py)
 *A LoRA fine-tuning pipeline for a Python code-generation LLM, rebuilt end-to-end for Apple Silicon.*
 * **Stack:** Python, MLX, Hugging Face, Anthropic API.
