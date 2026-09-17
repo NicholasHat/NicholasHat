@@ -36,10 +36,6 @@ Python, FastAPI, React/TypeScript, Ollama, ChromaDB
 
 A ChatGPT-style assistant that runs entirely on your own machine through Ollama. I built it to understand how modern agents actually work: a real function-calling loop, document RAG, PDF form filling, a file-based skills system the model can extend, and a coding agent that edits local repos with human approval on every change. The model can write new skills for itself, but only as instruction files, never executable code, which closes off prompt injection turning into code execution. 180+ tests run without a live model by routing every LLM call through one mockable client.
 
-## Other work
-
-At the Zenyuk Lab I built the extraction pipeline above and shipped the Streamlit app the lab uses to run it: batch PDF ingestion, a review queue, and a tool-calling lab assistant with guarded SQL access, backed by 125+ tests. Before that I was on a 3-person team building NIMBUS, a real-time ASL interpretation system, where I wrote the serverless AWS backend and a WebSocket ingestion layer streaming 258 MediaPipe keypoints at 10 FPS. I frequently attend hackathons to push myself to learn new technologies.
-
 ## Skills
 
 | | |
