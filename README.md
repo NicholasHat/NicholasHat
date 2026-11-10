@@ -11,6 +11,17 @@ Swift, Python, Core ML, MLX, Metal
 
 Speculative decoding across the Apple Neural Engine and the GPU on a single M3, using public APIs only. A 1B draft model runs on the ANE while an 8B target verifies on the GPU. I measured a 1.47x decoding speedup over a GPU-only baseline with token-exact output, and the ANE draft is fully hidden inside the GPU's verify window. On my M3 that's 28.1 tok/s vs 19.1 with greedy decoding. Before writing any model code I built a zero-allocation measurement harness with a kill criterion for the ANE-to-GPU handoff. It traced the handoff's latency tail to the GPU dropping its clock when idle, which isn't in Apple's documentation. Keeping the GPU busy takes p99 handoff latency from 1.33 ms to 165 µs, about three orders of magnitude below the compute on either side. Getting a stateful KV-cache Llama onto the ANE meant working through four toolchain failures. One was a silent tracing bug that left the output correct but held draft acceptance at 11%. Fixing it raised acceptance to 50% against a 3B target, and the fixed draft reaches 86% against the 8B.
 
+### [rare-earth-extraction](https://github.com/NicholasHat/rare-earth-extraction)
+Python, Anthropic Claude (Batches API, code execution), Streamlit, SQLite, pdfplumber
+
+Built for a UCI chemistry lab with thousands of papers and no machine-readable data. A versioned Claude extraction pipeline digitizes the data in research paper figures and tables into a 35-column table, one row per data point.
+
+To catch the model silently dropping points, a deterministic pdfplumber pass reads markers and calibrates axes straight from the PDF's vector geometry, then hands the model those coordinates as anchors. On the reference paper that hand-off came out with a median error of 0.01 %E across 171 points against the human-approved data.
+
+This fall it went from test papers to real volume. A literature survey screened 10,777 candidates down to a 3,067-paper catalogue, and only papers with a verified open license can enter the database. I audited a 10-paper trial against the PDFs. The digitized numbers held up (typically within 0.5 %E), but values landed in the wrong column or lost their varied axis, so each failure became a prompt rule or a QA check. The current prompt has extracted 4,651 data points from 56 open-access papers at about $0.37 per paper. Those are still waiting on human review, because nothing enters the database without it.
+
+The bulk runner is safe to interrupt: submissions are journaled, every paid turn is saved to disk, and re-running a collection never pays twice. There's also an analysis page (half-extraction pH across the lanthanides, separation factors, slope analysis) and an assistant that has read-only access, so it can't change anything even if someone jailbreaks it. 463 tests run offline.
+
 ### [oss-instruct-py](https://github.com/NicholasHat/oss-instruct-py)
 Python, MLX, Hugging Face, Anthropic Batches API
 
@@ -21,11 +32,6 @@ Python, FastAPI, PostgreSQL/pgvector, React, Docker
 
 Point it at a messy folder of project files and it reconstructs what happened, in what order, what's missing, and where the project drifted from its original direction. Every inference carries its evidence back to the source files. It's an 11-stage pipeline (ingest through report) that parses six formats: PDF, Word, PowerPoint, spreadsheets, images and text. A React dashboard sits on top, and the backend deploys with one `docker compose up` (FastAPI, Postgres with pgvector, Ollama, and Caddy with automatic HTTPS). Structured data, the relationship graph, and embeddings all live in one Postgres store, so there's no separate vector database. On startup, a reconciliation sweep marks runs orphaned by a crash as failed so they don't block new ones. CI runs the 213-test suite against a fresh pgvector database on every push to main and every PR.
 
-### [rare-earth-extraction](https://github.com/NicholasHat/rare-earth-extraction)
-Python, Anthropic Claude, Streamlit, SQLite, pdfplumber
-
-Built for a UCI chemistry lab with thousands of papers and no machine-readable data. A versioned Claude extraction pipeline digitizes extraction-vs-pH figures out of research PDFs. To catch the model silently dropping points, a deterministic pdfplumber pass reads markers and calibrates axes straight from the PDF's vector geometry, then hands the model those coordinates as anchors. On the reference paper, automatic axis calibration went from 0 of 10 axes to 9 of 10. The first real paper the hand-off ran on came out with a median error of 0.01 %E across 171 points against the human-approved data. Every extraction goes through an automatic QA suite and human review before it's merged, in one atomic transaction with an audit log. The assistant that answers questions over the data has read-only access, so it can't change anything even if someone jailbreaks it. 330 tests run offline.
-
 ### [rate-limiter](https://github.com/NicholasHat/rate-limiter)
 Python, Terraform, AWS Lambda, API Gateway, DynamoDB, k6
 
@@ -34,7 +40,12 @@ Three rate limiters (a naive token bucket, an atomic token bucket, and a sliding
 ### [local-AI](https://github.com/NicholasHat/local-AI)
 Python, FastAPI, React/TypeScript, Ollama, ChromaDB
 
-A ChatGPT-style assistant that runs entirely on your own machine through Ollama. I built it to understand how modern agents actually work: a real function-calling loop, document RAG, PDF form filling, a file-based skills system the model can extend, and a coding agent that works in a throwaway git worktree, so nothing lands until a human approves the full diff. The model can write new skills for itself, but only as instruction files, never executable ones, so a prompt injection can't plant code as a skill. 320+ tests run without a live model by routing every LLM call through one mockable client.
+A ChatGPT-style assistant that runs entirely on your own machine through Ollama. I built it to understand how modern agents actually work: a real function-calling loop, document RAG, PDF form filling, a file-based skills system the model can extend, and a coding agent that works in a throwaway git worktree, so nothing lands until a human approves the full diff. The model can write new skills for itself, but only as instruction files, never executable ones, so a prompt injection can't plant code as a skill. 345 tests run without a live model by routing every LLM call through one mockable client.
+
+### [Pointer](https://github.com/har-m33t/claude-socal-affordable-housing-hackathon)
+TypeScript, Next.js, React, Anthropic Claude, PDF.js
+
+Built with a team at the Claude Impact Lab hackathon at UCI (November 2026). Pointer walks a homeowner through their city's real ADU permit paperwork and points at exactly what each step needs. Answers quote the city's own documents, and if the documents don't cover something it says so instead of guessing. Uploaded files are redacted in the browser before anything is sent to Claude.
 
 ## Skills
 
