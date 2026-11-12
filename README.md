@@ -51,7 +51,7 @@ Built with a team at the Claude Impact Lab hackathon at UCI (November 2026). Poi
 
 | | |
 | :--- | :--- |
-| **Languages** | Python, TypeScript, JavaScript, Swift, C/C++, SQL, Java |
+| **Languages** | Python, TypeScript, JavaScript, Swift, C++, SQL, Java |
 | **AI / ML** | Core ML, MLX, LoRA fine-tuning (mlx-lm), Hugging Face, Ollama, Anthropic Claude API, AWS Bedrock, LLM tool-calling and RAG, NumPy, Pandas |
 | **Backend and cloud** | FastAPI, PostgreSQL/pgvector, SQLite, AWS (Lambda, API Gateway, DynamoDB, S3, Polly, Rekognition), Docker, Terraform, AWS SAM, GitHub Actions, k6 |
 | **Frontend** | Next.js, React, TailwindCSS, Streamlit, Three.js |
