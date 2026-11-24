@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://linkedin.com/in/nicholas-tweedie-425a9b32b"><img src="https://img.shields.io/badge/LinkedIn-Nicholas%20Tweedie-0A66C2?style=flat-square" alt="LinkedIn"></a>
+  <a href="https://www.linkedin.com/in/nicholas-tweedie/"><img src="https://img.shields.io/badge/LinkedIn-Nicholas%20Tweedie-0A66C2?style=flat-square" alt="LinkedIn"></a>
   <a href="mailto:ntweedie@uci.edu"><img src="https://img.shields.io/badge/Email-ntweedie@uci.edu-333333?style=flat-square&logo=gmail&logoColor=white" alt="Email"></a>
   <a href="https://huggingface.co/nicholashat"><img src="https://img.shields.io/badge/Hugging%20Face-nicholashat-FFD21E?style=flat-square&logo=huggingface&logoColor=black" alt="Hugging Face"></a>
 </p>
