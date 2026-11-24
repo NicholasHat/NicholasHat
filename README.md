@@ -1,63 +1,78 @@
-# Nicholas Tweedie
+<h1 align="center">Nicholas Tweedie</h1>
 
-I'm a Software Engineering student at UC Irvine (B.S. expected June 2028). I've been fascinated by technology since long before college, and what keeps me building is the number of real problems software can solve. Lately most of my work has been on running LLMs on-device, local-first AI tools, and data pipelines that turn research papers into something a lab can actually query.
+<p align="center">
+  Software Engineering @ UC Irvine | Undergraduate Researcher, Software @ National Fuel Cell Research Center
+</p>
 
-I currently work as a Software Developer (Undergraduate Researcher) at the Zenyuk Lab at UCI's National Fuel Cell Research Center, and I'm looking for a Software Engineering internship for Summer 2027.
+<p align="center">
+  <a href="https://linkedin.com/in/nicholas-tweedie-425a9b32b"><img src="https://img.shields.io/badge/LinkedIn-Nicholas%20Tweedie-0A66C2?style=flat-square" alt="LinkedIn"></a>
+  <a href="mailto:ntweedie@uci.edu"><img src="https://img.shields.io/badge/Email-ntweedie@uci.edu-333333?style=flat-square&logo=gmail&logoColor=white" alt="Email"></a>
+  <a href="https://huggingface.co/nicholashat"><img src="https://img.shields.io/badge/Hugging%20Face-nicholashat-FFD21E?style=flat-square&logo=huggingface&logoColor=black" alt="Hugging Face"></a>
+</p>
+
+> [!NOTE]
+> **Looking for a Summer 2027 software engineering internship.** B.S. Software Engineering, UC Irvine, June 2028 · GPA 3.6
+
+I like building software that solves real problems. Most of my recent work is running LLMs on-device, building local-first AI tools, and turning research papers into data a lab can actually use.
+
+## Experience
+
+**Undergraduate Research Assistant, Software** · Zenyuk Lab, National Fuel Cell Research Center, UCI · *Apr 2026 – present*
+<br>Built [rare-earth-extraction](https://github.com/NicholasHat/rare-earth-extraction), an AI tool that pulls data out of charts in chemistry papers.
+- Extracted 4,800+ data points from 50+ open-access papers at about $0.37 per paper (Claude Batches API)
+- Caught points the model silently dropped by reading marker positions straight from each PDF's vector geometry
+- Crash-safe batch runner that can stop and resume without paying twice, plus a human review queue and 460+ tests
+
+`Python` `Claude API` `pdfplumber` `Streamlit` `SQLite`
 
 ## Projects
 
 ### [ZeroHop](https://github.com/NicholasHat/ZeroHop)
-Swift, Python, Core ML, MLX, Metal
+Made LLM text generation faster on a Mac by splitting the work across the Neural Engine and the GPU.
+- **1.47x faster** decoding on an M3 (28.1 vs 19.1 tokens/sec) with identical output, using a 1B draft model and an 8B target
+- Cut the chip-to-chip handoff delay from 1.33 ms to 165 µs after my measuring tool found power-state behavior missing from Apple's docs
 
-Speculative decoding across the Apple Neural Engine and the GPU on a single M3, using public APIs only. A 1B draft model runs on the ANE while an 8B target verifies on the GPU. I measured a 1.47x decoding speedup over a GPU-only baseline with token-exact output, and the ANE draft is fully hidden inside the GPU's verify window. On my M3 that's 28.1 tok/s vs 19.1 with greedy decoding. Before writing any model code I built a zero-allocation measurement harness with a kill criterion for the ANE-to-GPU handoff. It traced the handoff's latency tail to the GPU dropping its clock when idle, which isn't in Apple's documentation. Keeping the GPU busy takes p99 handoff latency from 1.33 ms to 165 µs, about three orders of magnitude below the compute on either side. Getting a stateful KV-cache Llama onto the ANE meant working through four toolchain failures. One was a silent tracing bug that left the output correct but held draft acceptance at 11%. Fixing it raised acceptance to 50% against a 3B target, and the fixed draft reaches 86% against the 8B.
-
-### [rare-earth-extraction](https://github.com/NicholasHat/rare-earth-extraction)
-Python, Anthropic Claude (Batches API, code execution), Streamlit, SQLite, pdfplumber
-
-Built for a UCI chemistry lab with thousands of papers and no machine-readable data. A versioned Claude extraction pipeline digitizes the data in research paper figures and tables into a 35-column table, one row per data point.
-
-To catch the model silently dropping points, a deterministic pdfplumber pass reads markers and calibrates axes straight from the PDF's vector geometry, then hands the model those coordinates as anchors. On the reference paper that hand-off came out with a median error of 0.01 %E across 171 points against the human-approved data.
-
-This fall it went from test papers to real volume. A literature survey screened 10,777 candidates down to a 3,067-paper catalogue, and only papers with a verified open license can enter the database. I audited a 10-paper trial against the PDFs. The digitized numbers held up (typically within 0.5 %E), but values landed in the wrong column or lost their varied axis, so each failure became a prompt rule or a QA check. The database now holds 4,805 data points from 52 open-access papers, extracted at about $0.37 per paper. Every one of those papers went through human review, because nothing enters the database without it.
-
-The bulk runner is safe to interrupt: submissions are journaled, every paid turn is saved to disk, and re-running a collection never pays twice. There's also an analysis page (half-extraction pH across the lanthanides, separation factors, slope analysis) and an assistant that has read-only access, so it can't change anything even if someone jailbreaks it. 463 tests run offline.
+`Swift` `Python` `Core ML` `MLX` `Metal`
 
 ### [oss-instruct-py](https://github.com/NicholasHat/oss-instruct-py)
-Python, MLX, Hugging Face, Anthropic Batches API
+Fine-tuned a code-writing LLM on synthetic training data I generated.
+- Raised HumanEval pass@1 from **67.7% to 70.7%** by LoRA fine-tuning Qwen2.5-Coder-3B on ~28K examples ([adapter on Hugging Face](https://huggingface.co/nicholashat/qwen2.5-coder-3b-oss-instruct-lora))
+- Traced a repeatable 7B training crash to MLX memory corruption and fixed it, halving peak memory to 6.6 GB
 
-The OSS-Instruct method from the Magicoder paper, adapted to run end to end on Apple Silicon. I generated about 30K synthetic instruction/solution pairs from open-source code with the Anthropic Batches API, kept about 28K for training after filtering and dedup, LoRA fine-tuned Qwen2.5-Coder-3B-Instruct with mlx-lm, and evaluated on HumanEval and MBPP under the same greedy protocol for both arms. HumanEval pass@1 went from 67.7% to 70.7% and MBPP from 58.2% to 59.6%. The tuned adapter is on [Hugging Face](https://huggingface.co/nicholashat/qwen2.5-coder-3b-oss-instruct-lora). A 7B run kept hitting a deterministic NaN. An A/B repro script traced it to MLX corrupting buffers past its wired-memory limit, not to the training config. Gradient checkpointing cut peak step memory from 13.4 GB to 6.6 GB and ran clean through a 1,200-iteration diagnostic. The full 7B run is still in progress.
-
-### [project-steward](https://github.com/NicholasHat/project-steward) (Project Truth Engine)
-Python, FastAPI, PostgreSQL/pgvector, React, Docker
-
-Point it at a messy folder of project files and it reconstructs what happened, in what order, what's missing, and where the project drifted from its original direction. Every inference carries its evidence back to the source files. It's an 11-stage pipeline (ingest through report) that parses six formats: PDF, Word, PowerPoint, spreadsheets, images and text. A React dashboard sits on top, and the backend deploys with one `docker compose up` (FastAPI, Postgres with pgvector, Ollama, and Caddy with automatic HTTPS). Structured data, the relationship graph, and embeddings all live in one Postgres store, so there's no separate vector database. On startup, a reconciliation sweep marks runs orphaned by a crash as failed so they don't block new ones. CI runs the 213-test suite against a fresh pgvector database on every push to main and every PR.
+`Python` `MLX` `Hugging Face` `LoRA`
 
 ### [rate-limiter](https://github.com/NicholasHat/rate-limiter)
-Python, Terraform, AWS Lambda, API Gateway, DynamoDB, k6
+Three API rate limiters on AWS, load-tested side by side.
+- Load tests found a race condition letting **35 requests through a limit of 10**; an atomic DynamoDB write brought it to 11
+- Measured the cost of correctness: p99 response time went from 163 ms to about 380 ms
 
-Three rate limiters (a naive token bucket, an atomic token bucket, and a sliding window) deployed as parallel Lambda routes from one Terraform map, then load-tested with identical k6 bursts of 100 requests from 10 concurrent workers. With a limit of 10, the non-atomic version admitted 35, because concurrent reads saw stale state. A DynamoDB conditional-write compare-and-set brought that to 11, consistent with one token refilling during the 1.5 s burst. The sliding window admitted exactly 10. Correctness has a cost: p99 latency rose from 163 ms to about 380 ms on the atomic paths. There's also a CAS retry and jittered-backoff experiment, plus GitHub Actions CI for the Terraform checks and unit tests.
+`Python` `AWS Lambda` `DynamoDB` `Terraform` `k6`
+
+### [project-steward](https://github.com/NicholasHat/project-steward)
+Rebuilds a project's timeline, gaps, and drift from a messy folder of files, with every claim linked to its source.
+- 11-stage pipeline that reads PDFs, Word, PowerPoint, spreadsheets, images, and text
+- Deploys with one `docker compose up`; CI runs 210+ tests against a live Postgres database on every push
+
+`Python` `FastAPI` `PostgreSQL` `pgvector` `React` `Docker`
 
 ### [local-AI](https://github.com/NicholasHat/local-AI)
-Python, FastAPI, React/TypeScript, Ollama, ChromaDB
+A private ChatGPT-style assistant that runs entirely on your own machine.
+- Tool calling, document search (RAG), PDF form filling, and a coding agent that can't change anything until a human approves the diff
+- 345 tests run without a live model
 
-A ChatGPT-style assistant that runs entirely on your own machine through Ollama. I built it to understand how modern agents actually work: a real function-calling loop, document RAG, PDF form filling, a file-based skills system the model can extend, and a coding agent that works in a throwaway git worktree, so nothing lands until a human approves the full diff. The model can write new skills for itself, but only as instruction files, never executable ones, so a prompt injection can't plant code as a skill. 345 tests run without a live model by routing every LLM call through one mockable client.
+`Python` `FastAPI` `React` `TypeScript` `Ollama`
 
-### [Pointer](https://github.com/har-m33t/claude-socal-affordable-housing-hackathon)
-TypeScript, Next.js, React, Anthropic Claude, PDF.js
+### [Pointer](https://github.com/har-m33t/claude-socal-affordable-housing-hackathon) · Claude Impact Lab hackathon, team of 5
+Walks homeowners through their city's backyard-home (ADU) permit paperwork, answering only from the city's own documents.
+- Wrote in-browser redaction that strips names, addresses, and parcel numbers before anything reaches Claude
 
-Built with a team at the Claude Impact Lab hackathon at UCI (November 2026). Pointer walks a homeowner through their city's real ADU permit paperwork and points at exactly what each step needs. Answers quote the city's own documents, and if the documents don't cover something it says so instead of guessing. Uploaded files are redacted in the browser before anything is sent to Claude.
+`TypeScript` `Next.js` `React` `Claude API`
 
 ## Skills
 
 | | |
 | :--- | :--- |
 | **Languages** | Python, TypeScript, JavaScript, Swift, C++, SQL, Java |
-| **AI / ML** | Core ML, MLX, LoRA fine-tuning (mlx-lm), Hugging Face, Ollama, Anthropic Claude API, AWS Bedrock, LLM tool-calling and RAG, NumPy, Pandas |
-| **Backend and cloud** | FastAPI, PostgreSQL/pgvector, SQLite, AWS (Lambda, API Gateway, DynamoDB, S3, Polly, Rekognition), Docker, Terraform, AWS SAM, GitHub Actions, k6 |
-| **Frontend** | Next.js, React, TailwindCSS, Streamlit, Three.js |
-
-## Contact
-
-- LinkedIn: [linkedin.com/in/nicholas-tweedie-425a9b32b](https://linkedin.com/in/nicholas-tweedie-425a9b32b)
-- Hugging Face: [huggingface.co/nicholashat](https://huggingface.co/nicholashat)
-- Email: [ntweedie@uci.edu](mailto:ntweedie@uci.edu)
+| **AI / ML** | LoRA fine-tuning, Core ML, MLX, Hugging Face, Claude API, Ollama, RAG, tool calling |
+| **Backend and cloud** | FastAPI, PostgreSQL/pgvector, SQLite, AWS (Lambda, API Gateway, DynamoDB, S3), Docker, Terraform, GitHub Actions |
+| **Frontend** | React, Next.js, TailwindCSS, Streamlit |
